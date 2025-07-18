@@ -54,6 +54,23 @@
       background-color: #333;
       color: white;
     }
+    .random-btn {
+      text-align: center;
+      margin: 20px;
+    }
+    .random-btn button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background: #008cff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .random-btn button:hover {
+      background: #005bbb;
+    }
     .container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -105,6 +122,10 @@
   </div>
 
   <div class="filters" id="genre-filters"></div>
+
+  <div class="random-btn">
+    <button onclick="showRandomSerial()">🎲 Показать случайный сериал</button>
+  </div>
 
   <div class="container" id="serials-container"></div>
 
@@ -231,6 +252,11 @@
         : serials;
       renderSerials(baseList);
     });
+
+    function showRandomSerial() {
+      const random = serials[Math.floor(Math.random() * serials.length)];
+      alert(`🎬 ${random.title}\n\nЖанр: ${random.genre}\nРейтинг: ${random.rating}\n\n${random.description}`);
+    }
 
     const uniqueGenres = getUniqueGenres(serials);
     renderFilters(uniqueGenres);
