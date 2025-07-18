@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ТОП-10 зарубежных сериалов — TopSerials</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+    }
+    table {
+      width: 90%;
+      max-width: 900px;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #333;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .back-btn {
+      display: block;
+      width: fit-content;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #008cff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+    }
+    .back-btn:hover {
+      background: #005bbb;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ТОП-10 зарубежных сериалов</h1>
+    <p>Выбор искусственного интеллекта</p>
+  </header>
+
+  <table>
+    <tr>
+      <th>№</th>
+      <th>Название</th>
+      <th>Жанр</th>
+      <th>Рейтинг</th>
+    </tr>
+    <tr><td>1</td><td>Во все тяжкие</td><td>Драма, Криминал</td><td>9.5</td></tr>
+    <tr><td>2</td><td>Игра престолов</td><td>Фэнтези, Драма</td><td>9.3</td></tr>
+    <tr><td>3</td><td>Шерлок</td><td>Детектив, Драма</td><td>9.1</td></tr>
+    <tr><td>4</td><td>Черное зеркало</td><td>Фантастика, Триллер</td><td>8.8</td></tr>
+    <tr><td>5</td><td>Острые козырьки</td><td>Криминал, Драма</td><td>8.8</td></tr>
+    <tr><td>6</td><td>Очень странные дела</td><td>Фантастика, Триллер</td><td>8.7</td></tr>
+    <tr><td>7</td><td>Мандалорец</td><td>Фантастика, Приключения</td><td>8.7</td></tr>
+    <tr><td>8</td><td>Корона</td><td>Историческая драма</td><td>8.6</td></tr>
+    <tr><td>9</td><td>Фарго</td><td>Детектив, Криминал</td><td>8.9</td></tr>
+    <tr><td>10</td><td>Карточный домик</td><td>Политика, Драма</td><td>8.7</td></tr>
+  </table>
+
+  <a href="index.html" class="back-btn">← Вернуться на главную</a>
+</body>
+</html>
 
