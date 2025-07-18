@@ -1,7 +1,249 @@
-    const savedTheme = localStorage.getItem("theme") || "light";
-    applyTheme(savedTheme);
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="title">TopSerials — Популярные зарубежные сериалы</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+      color: #000;
+    }
+    header {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #444;
+      color: #fff;
+      cursor: pointer;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .controls select, .controls button {
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .rating, .date {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 data-i18n="header">TopSerials: Зарубежные сериалы</h1>
+    <p data-i18n="desc">Фильтрация по году, рейтингу, жанру. Обновление через TMDB API</p>
+    <button id="theme-toggle">🌙 <span data-i18n="dark_mode">Тёмная тема</span></button>
+    <select id="lang-switch">
+      <option value="ru">🇷🇺 Русский</option>
+      <option value="en">🇬🇧 English</option>
+    </select>
+  </header>
 
-    // 🌍 Автоопределение языка браузера
-    const browserLang = navigator.language.startsWith("ru") ? "ru" : "en";
-    document.getElementById("lang-switch").value = browserLang;
-    translate(browserLang);
+  <div class="controls">
+    <select id="genre-select">
+      <option value="" data-i18n="all_genres">Все жанры</option>
+    </select>
+    <select id="year-select">
+      <option value="" data-i18n="all_years">Все годы</option>
+    </select>
+    <select id="rating-select">
+      <option value="" data-i18n="all_ratings">Все рейтинги</option>
+      <option value="9">9+</option>
+      <option value="8">8+</option>
+      <option value="7">7+</option>
+    </select>
+    <button onclick="loadSection('popular')" data-i18n="top10">🔥 Топ 10</button>
+    <button onclick="loadSection('airing_today')" data-i18n="new">🆕 Новинки</button>
+    <button onclick="loadSection('all')" data-i18n="all">🌍 Все</button>
+  </div>
+
+  <div class="container" id="serials-container"></div>
+
+  <script>
+    const apiKey = "c607e213bf2a729a00ee06646c9d82dd";
+    let allSerials = [];
+    let genresMap = {};
+
+    const translations = {
+      ru: {
+        title: "TopSerials — Популярные зарубежные сериалы",
+        header: "TopSerials: Зарубежные сериалы",
+        desc: "Фильтрация по году, рейтингу, жанру. Обновление через TMDB API",
+        dark_mode: "Тёмная тема",
+        light_mode: "Светлая тема",
+        all_genres: "Все жанры",
+        all_years: "Все годы",
+        all_ratings: "Все рейтинги",
+        top10: "🔥 Топ 10",
+        new: "🆕 Новинки",
+        all: "🌍 Все"
+      },
+      en: {
+        title: "TopSerials — Top Foreign TV Shows",
+        header: "TopSerials: Foreign TV Shows",
+        desc: "Filter by year, rating, genre. Powered by TMDB API",
+        dark_mode: "Dark Mode",
+        light_mode: "Light Mode",
+        all_genres: "All Genres",
+        all_years: "All Years",
+        all_ratings: "All Ratings",
+        top10: "🔥 Top 10",
+        new: "🆕 New",
+        all: "🌍 All"
+      }
+    };
+
+    function translate(lang) {
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) el.textContent = translations[lang][key];
+      });
+      document.title = translations[lang]["title"];
+    }
+
+    document.getElementById("lang-switch").addEventListener("change", e => {
+      const lang = e.target.value;
+      localStorage.setItem("language", lang);
+      translate(lang);
+    });
+
+    function detectLanguage() {
+      const saved = localStorage.getItem("language");
+      if (saved) return saved;
+      const lang = navigator.language.slice(0, 2);
+      return lang === 'ru' ? 'ru' : 'en';
+    }
+
+    const lang = detectLanguage();
+    document.getElementById("lang-switch").value = lang;
+    translate(lang);
+
+    async function fetchGenres() {
+      const res = await fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKey}&language=ru-RU`);
+      const data = await res.json();
+      genresMap = Object.fromEntries(data.genres.map(g => [g.id, g.name]));
+      const genreSelect = document.getElementById("genre-select");
+      data.genres.forEach(g => {
+        const opt = document.createElement("option");
+        opt.value = g.id;
+        opt.textContent = g.name;
+        genreSelect.appendChild(opt);
+      });
+    }
+
+    async function loadSection(type) {
+      let url;
+      if (type === "popular") {
+        url = `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=ru-RU&page=1`;
+      } else if (type === "airing_today") {
+        url = `https://api.themoviedb.org/3/tv/airing_today?api_key=${apiKey}&language=ru-RU&page=1`;
+      } else {
+        url = `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=ru-RU&sort_by=popularity.desc&page=1`;
+      }
+      const res = await fetch(url);
+      const data = await res.json();
+      allSerials = data.results;
+      renderSerials();
+    }
+
+    function renderSerials() {
+      const genreFilter = document.getElementById("genre-select").value;
+      const yearFilter = document.getElementById("year-select").value;
+      const ratingFilter = parseFloat(document.getElementById("rating-select").value) || 0;
+      const container = document.getElementById("serials-container");
+      const filtered = allSerials.filter(s => {
+        const genreMatch = !genreFilter || s.genre_ids.includes(parseInt(genreFilter));
+        const year = s.first_air_date ? s.first_air_date.split("-")[0] : "";
+        const yearMatch = !yearFilter || year === yearFilter;
+        const ratingMatch = s.vote_average >= ratingFilter;
+        return genreMatch && yearMatch && ratingMatch;
+      });
+
+      container.innerHTML = "";
+      filtered.forEach(s => {
+        const genres = s.genre_ids.map(id => genresMap[id]).join(", ");
+        const year = s.first_air_date ? s.first_air_date.split("-")[0] : "—";
+        container.innerHTML += `
+          <div class="card">
+            <img src="https://image.tmdb.org/t/p/w500${s.poster_path}" alt="${s.name}">
+            <div class="card-content">
+              <div class="title">${s.name}</div>
+              <div class="date"><strong>Год:</strong> ${year}</div>
+              <div class="rating"><strong>Рейтинг:</strong> ${s.vote_average.toFixed(1)}</div>
+              <div class="rating"><strong>Жанр:</strong> ${genres}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function populateYears() {
+      const yearSelect = document.getElementById("year-select");
+      const currentYear = new Date().getFullYear();
+      for (let y = currentYear; y >= 1980; y--) {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+      }
+    }
+
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+      const isDark = document.body.style.backgroundColor === "rgb(18, 18, 18)";
+      document.body.style.backgroundColor = isDark ? "#f0f2f5" : "#121212";
+      document.body.style.color = isDark ? "#000" : "#e0e0e0";
+      document.getElementById("theme-toggle").textContent = isDark ? "🌙 Тёмная тема" : "☀️ Светлая тема";
+    });
+
+    fetchGenres();
+    populateYears();
+    loadSection("popular");
+  </script>
+</body>
+</html>
