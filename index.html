@@ -19,6 +19,20 @@
     h1 {
       margin: 0;
     }
+    .search-bar {
+      background: #fff;
+      padding: 10px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    .search-bar input {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
     .filters {
       padding: 10px 20px;
       display: flex;
@@ -86,9 +100,11 @@
     <p>Подборка лучших сериалов, отобранных искусственным интеллектом</p>
   </header>
 
-  <div class="filters" id="genre-filters">
-    <!-- Кнопки жанров появятся здесь -->
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Поиск по названию...">
   </div>
+
+  <div class="filters" id="genre-filters"></div>
 
   <div class="container" id="serials-container"></div>
 
@@ -154,6 +170,7 @@
 
     const container = document.getElementById("serials-container");
     const filterBar = document.getElementById("genre-filters");
+    const searchInput = document.getElementById("search-input");
 
     function getUniqueGenres(serials) {
       const allGenres = serials.flatMap(s => s.genre.split(',').map(g => g.trim()));
@@ -185,8 +202,10 @@
     }
 
     function renderSerials(list) {
+      const searchTerm = searchInput.value.toLowerCase();
+      const filtered = list.filter(s => s.title.toLowerCase().includes(searchTerm));
       container.innerHTML = "";
-      list.forEach(s => {
+      filtered.forEach(s => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
@@ -202,7 +221,17 @@
       });
     }
 
-    // Старт
+    searchInput.addEventListener("input", () => {
+      const activeGenreBtn = document.querySelector(".filters button.active");
+      const genre = activeGenreBtn && activeGenreBtn.textContent !== "Показать все"
+        ? activeGenreBtn.textContent
+        : null;
+      const baseList = genre
+        ? serials.filter(s => s.genre.includes(genre))
+        : serials;
+      renderSerials(baseList);
+    });
+
     const uniqueGenres = getUniqueGenres(serials);
     renderFilters(uniqueGenres);
     renderSerials(serials);
