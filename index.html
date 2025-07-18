@@ -1,201 +1,205 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
+<голова>
   <meta charset="UTF-8" />
-  <title>TopSerials — Популярные сериалы (API)</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      transition: background-color 0.3s, color 0.3s;
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TopSerials — Мультсериалы</title>
+  <стиль>
+    тело {
+      семейство шрифтов: Arial, без засечек;
+      поле: 0;
+      отступ: 0;
+      переход: фоновый цвет 0,3 с, цвет 0,3 с;
+      цвет фона: #f0f2f5;
+      цвет: #000;
     }
-    header {
-      background-color: #222;
-      color: white;
-      padding: 20px;
-      text-align: center;
+    заголовок {
+      фоновый цвет: #222;
+      цвет: белый;
+      отступ: 20px;
+      выравнивание текста: по центру;
     }
-    header button {
-      margin-top: 10px;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
-      background: #444;
-      color: #fff;
-      cursor: pointer;
+    кнопка заголовка {
+      отступ сверху: 10px;
+      отступы: 6px 12px;
+      граница: нет;
+      Радиус закругления: 6 пикселей;
+      фон: #444;
+      цвет: #fff;
+      курсор: указатель;
     }
-    h1 {
-      margin: 0;
+    .контроллеры {
+      дисплей: гибкий;
+      flex-wrap: обертывание;
+      justify-content: center;
+      зазор: 10 пикселей;
+      поле: 10px 0;
     }
-    .search-bar {
-      background: #fff;
-      padding: 10px 20px;
-      text-align: center;
-      border-bottom: 1px solid #ddd;
+    .выбор элементов управления, .кнопка элементов управления {
+      отступы: 6px 12px;
+      размер шрифта: 14px;
+      Радиус закругления: 6 пикселей;
     }
-    .search-bar input {
-      width: 100%;
-      max-width: 400px;
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+    .контейнер {
+      отображение: сетка;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      зазор: 20 пикселей;
+      отступ: 20px;
     }
-    .random-btn {
-      text-align: center;
-      margin: 20px;
-    }
-    .random-btn button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      background: #008cff;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .random-btn button:hover {
-      background: #005bbb;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
+    .карта {
+      фон: белый;
+      радиус скругления: 12 пикселей;
+      переполнение: скрыто;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
+      переход: преобразование 0,2с;
     }
     .card:hover {
-      transform: scale(1.02);
+      преобразование: масштаб(1.02);
     }
-    .card img {
-      width: 100%;
-      height: auto;
-      display: block;
+    .карта img {
+      ширина: 100%;
+      высота: 350 пикселей;
+      объект-подгонка: крышка;
     }
     .card-content {
-      padding: 15px;
+      отступ: 15px;
     }
-    .title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
+    .заголовок {
+      размер шрифта: 18px;
+      начертание шрифта: жирный;
+      отступ снизу: 8px;
     }
-    .rating {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 4px;
+    .рейтинг, .дата {
+      размер шрифта: 14px;
+      цвет: #555;
     }
-    .description {
-      font-size: 14px;
-      color: #333;
-    }
-  </style>
+  </стиль>
 </head>
-<body>
-  <header>
-    <h1>TopSerials: Популярные зарубежные сериалы</h1>
-    <p>Данные загружаются с TMDB API</p>
-    <button id="theme-toggle">🌙 Тёмная тема</button>
-  </header>
+<тело>
+  <заголовок>
+    <h1>TopSerials: Нравится</h1>
+    <p>Р¤РёР»СЊСЂР°С†РёСЏ РїРѕ РіРѕРґСѓ, СЂРµР№С‚РёРЅРіСѓ, Р¶Р°РЅСЂСѓ. Расширенный интерфейс TMDB API</p>
+    <button id="theme-toggle">подключиться</button>
+  </заголовок>
 
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Поиск по названию...">
-  </div>
-
-  <div class="random-btn">
-    <button onclick="showRandomSerial()">🎲 Показать случайный сериал</button>
+  <div class="controls">
+    <select id="genre-select">
+      <option value="">Нет</option>
+    </выбрать>
+    <select id="year-select">
+      <option value="">Добавка</option>
+    </выбрать>
+    <select id="rating-select">
+      <option value="">Добавить</option>
+      <option value="9">9+</option>
+      <option value="8">8+</option>
+      <option value="7">7+</option>
+    </выбрать>
+    <button onclick="loadSection('popular')">рџ”Ґ РўРѕРї 10</button>
+    <button onclick="loadSection('airing_today')">рџ†• РќРѕРІРёРЅРєРё</button>
+    <button onclick="loadSection('all')">рџЊЌ В'СЃеµ</button>
   </div>
 
   <div class="container" id="serials-container"></div>
 
-  <script>
-    let serials = [];
-
-    async function fetchSerials() {
-      const url = "https://api.themoviedb.org/3/tv/popular?api_key=c607e213bf2a729a00ee06646c9d82dd&language=ru-RU&page=1";
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        serials = data.results.map(show => ({
-          title: show.name,
-          rating: show.vote_average.toFixed(1),
-          image: show.poster_path
-            ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
-            : "",
-          description: show.overview || "Описание отсутствует"
-        }));
-
-        renderSerials(serials);
-      } catch (error) {
-        console.error("Ошибка при загрузке сериалов:", error);
-        document.getElementById("serials-container").innerHTML = "<p>Ошибка загрузки данных.</p>";
-      }
-    }
-
+  <скрипт>
+    пусть allSerials = [];
+    пусть genresMap = {};
+    const apiKey = "c607e213bf2a729a00ee06646c9d82dd";
     const container = document.getElementById("serials-container");
-    const searchInput = document.getElementById("search-input");
-    const toggleBtn = document.getElementById("theme-toggle");
 
-    function renderSerials(list) {
-      const searchTerm = searchInput.value.toLowerCase();
-      const filtered = list.filter(s => s.title.toLowerCase().includes(searchTerm));
-      container.innerHTML = "";
-      filtered.forEach(s => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <img src="${s.image}" alt="${s.title}">
-          <div class="card-content">
-            <div class="title">${s.title}</div>
-            <div class="rating"><strong>Рейтинг:</strong> ${s.rating}</div>
-            <div class="description">${s.description}</div>
-          </div>
-        `;
-        container.appendChild(card);
+    асинхронная функция fetchGenres() {
+      const res = await fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKey}&language=ru-RU`);
+      const data = await res.json();
+      genresMap = Object.fromEntries(data.genres.map(g => [g.id, g.name]));
+      const genreSelect = document.getElementById("genre-select");
+      data.genres.forEach(g => {
+        const opt = document.createElement("option");
+        опт.значение = g.id;
+        opt.textContent = g.name;
+        genreSelect.appendChild(opt);
       });
     }
 
-    searchInput.addEventListener("input", () => {
-      renderSerials(serials);
-    });
-
-    function showRandomSerial() {
-      if (serials.length === 0) return;
-      const random = serials[Math.floor(Math.random() * serials.length)];
-      alert(`🎬 ${random.title}\n\nРейтинг: ${random.rating}\n\n${random.description}`);
+    асинхронная функция loadSection(тип) {
+      пусть url;
+      если (тип === "популярный") {
+        url = `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=ru-RU&page=1`;
+      } иначе если (тип === "airing_today") {
+        url = `https://api.themoviedb.org/3/tv/airing_today?api_key=${apiKey}&language=ru-RU&page=1`;
+      } еще {
+        url = `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&language=ru-RU&sort_by=popularity.desc&page=1`;
+      }
+      const res = await fetch(url);
+      const data = await res.json();
+      allSerials = данные.результаты;
+      renderSerials();
     }
 
-    function applyTheme(theme) {
-      if (theme === "dark") {
-        document.body.style.backgroundColor = "#121212";
-        document.body.style.color = "#e0e0e0";
-        toggleBtn.textContent = "☀️ Светлая тема";
-      } else {
-        document.body.style.backgroundColor = "#f0f2f5";
-        document.body.style.color = "#000";
-        toggleBtn.textContent = "🌙 Тёмная тема";
+    функция renderSerials() {
+      const genreFilter = document.getElementById("genre-select").value;
+      const yearFilter = document.getElementById("year-select").value;
+      const ratingFilter = parseFloat(document.getElementById("rating-select").value) || 0;
+      const filtered = allSerials.filter(s => {
+        const жанрMatch = !genreFilter || s.genre_ids.includes(parseInt(genreFilter));
+        const year = s.first_air_date ? s.first_air_date.split("-")[0] : "";
+        const yearMatch = !yearFilter || year === yearFilter;
+        const ratingMatch = s.vote_average >= ratingFilter;
+        вернуть жанрСовпадение && годСовпадение && рейтингСовпадение;
+      });
+
+      контейнер.innerHTML = "";
+      отфильтровано.forEach(s => {
+        const жанры = s.genre_ids.map(id => genresMap[id]).join(", ");
+        const year = s.first_air_date ? s.first_air_date.split("-")[0] : "—";
+        контейнер.innerHTML += `
+          <div class="card">
+            <img src="https://image.tmdb.org/t/p/w500${s.poster_path}" alt="${s.name}">
+            <div class="card-content">
+              <div class="title">${s.name}</div>
+              <div class="date"><strong>Год:</strong> ${year}</div>
+              <div class="rating"><strong>РμР№С‚РёРЅРі:</strong> ${s.vote_average.toFixed(1)</div>
+              <div class="rating"><strong>РанјрЂ:</strong> ${genres}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    функция populateYears() {
+      const yearSelect = document.getElementById("year-select");
+      const currentYear = new Date().getFullYear();
+      для (пусть y = текущий год; y >= 1980; y--) {
+        const opt = document.createElement("option");
+        опт.значение = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
       }
     }
 
-    toggleBtn.addEventListener("click", () => {
-      const current = localStorage.getItem("theme") === "dark" ? "light" : "dark";
-      localStorage.setItem("theme", current);
-      applyTheme(current);
+    функция applyTheme(тема) {
+      если (тема === "темная") {
+        document.body.style.backgroundColor = "#121212";
+        document.body.style.color = "#e0e0e0";
+        document.getElementById("theme-toggle").textContent = "Оборудование";
+      } еще {
+        document.body.style.backgroundColor = "#f0f2f5";
+        document.body.style.color = "#000";
+        document.getElementById("theme-toggle").textContent = "подключиться";
+      }
+    }
+
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+      const current = localStorage.getItem("theme") === "темный" ? "светлый" : "темный";
+      localStorage.setItem("тема", текущая);
+      applyTheme(текущая);
     });
 
-    fetchSerials();
+    fetchGenres();
+    populateYears();
+    loadSection("популярные");
     const savedTheme = localStorage.getItem("theme") || "light";
-    applyTheme(savedTheme);
-  </script>
-</body>
+    applyTheme(сохраненная тема);
+  </скрипт>
+</тело>
 </html>
