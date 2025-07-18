@@ -2,11 +2,161 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>TopSerials</title>
+  <title>TopSerials — Топ 10 зарубежных сериалов</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .genre, .rating {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 4px;
+    }
+    .description {
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-  <h1>Добро пожаловать на TopSerials!</h1>
-  <p>Сайт скоро заработает 😎</p>
+  <header>
+    <h1>TopSerials: Топ 10 зарубежных сериалов</h1>
+    <p>Подборка лучших сериалов, отобранных искусственным интеллектом</p>
+  </header>
+
+  <div class="container" id="serials-container"></div>
+
+  <script>
+    const serials = [
+      {
+        title: "Очень странные дела",
+        genre: "Фантастика, Триллер",
+        rating: "8.7",
+        image: "https://upload.wikimedia.org/wikipedia/en/f/f7/Stranger_Things_season_4.jpg",
+        description: "Мистические события в маленьком городке, где дети сталкиваются с потусторонними силами."
+      },
+      {
+        title: "Во все тяжкие",
+        genre: "Драма, Криминал",
+        rating: "9.5",
+        image: "https://upload.wikimedia.org/wikipedia/en/6/61/Breaking_Bad_title_card.png",
+        description: "Химик превращается в наркобарона после диагноза рака, чтобы обеспечить семью."
+      },
+      {
+        title: "Игра престолов",
+        genre: "Фэнтези, Драма",
+        rating: "9.3",
+        image: "https://upload.wikimedia.org/wikipedia/en/d/d8/Game_of_Thrones_title_card.jpg",
+        description: "Борьба за Железный трон в мире, где зима может длиться десятилетия."
+      },
+      {
+        title: "Шерлок",
+        genre: "Детектив, Драма",
+        rating: "9.1",
+        image: "https://upload.wikimedia.org/wikipedia/en/b/b9/Sherlock_titlecard.jpg",
+        description: "Современная адаптация классических историй о Шерлоке Холмсе."
+      },
+      {
+        title: "Черное зеркало",
+        genre: "Фантастика, Триллер",
+        rating: "8.8",
+        image: "https://upload.wikimedia.org/wikipedia/en/8/88/BlackMirrorTitleCard.jpg",
+        description: "Антология о мрачных технологиях будущего и их влиянии на общество."
+      },
+      {
+        title: "Корона",
+        genre: "Историческая драма",
+        rating: "8.6",
+        image: "https://upload.wikimedia.org/wikipedia/en/6/6e/The_Crown_title_card.jpg",
+        description: "История правления королевы Елизаветы II — от молодости до зрелости."
+      },
+      {
+        title: "Мандалорец",
+        genre: "Фантастика, Приключения",
+        rating: "8.7",
+        image: "https://upload.wikimedia.org/wikipedia/en/6/6c/The_Mandalorian_season_2_poster.jpg",
+        description: "Наемник в галактике после падения Империи защищает загадочного малыша."
+      },
+      {
+        title: "Очень английский скандал",
+        genre: "История, Драма",
+        rating: "7.7",
+        image: "https://upload.wikimedia.org/wikipedia/en/3/3f/A_Very_English_Scandal.png",
+        description: "История британского политика, замешанного в громком скандале 70-х."
+      },
+      {
+        title: "Острые козырьки",
+        genre: "Криминал, Драма",
+        rating: "8.8",
+        image: "https://upload.wikimedia.org/wikipedia/en/e/e1/Peaky_Blinders_titlecard.jpg",
+        description: "Банда Пики Блайндерс стремится к власти в Бирмингеме 20-х годов."
+      },
+      {
+        title: "Карточный домик",
+        genre: "Политика, Триллер",
+        rating: "8.7",
+        image: "https://upload.wikimedia.org/wikipedia/en/3/35/House_of_Cards_title_card.jpg",
+        description: "Манипуляции и коварство — путь к власти конгрессмена Андервуда."
+      }
+    ];
+
+    const container = document.getElementById("serials-container");
+
+    serials.forEach(s => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${s.image}" alt="${s.title}">
+        <div class="card-content">
+          <div class="title">${s.title}</div>
+          <div class="genre"><strong>Жанр:</strong> ${s.genre}</div>
+          <div class="rating"><strong>Рейтинг:</strong> ${s.rating}</div>
+          <div class="description">${s.description}</div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  </script>
 </body>
 </html>
-Добавлен index.html
