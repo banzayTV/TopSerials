@@ -6,15 +6,24 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
       margin: 0;
       padding: 0;
+      transition: background-color 0.3s, color 0.3s;
     }
     header {
       background-color: #222;
       color: white;
       padding: 20px;
       text-align: center;
+    }
+    header button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #444;
+      color: #fff;
+      cursor: pointer;
     }
     h1 {
       margin: 0;
@@ -115,6 +124,7 @@
   <header>
     <h1>TopSerials: Топ 10 зарубежных сериалов</h1>
     <p>Подборка лучших сериалов, отобранных искусственным интеллектом</p>
+    <button id="theme-toggle">🌙 Тёмная тема</button>
   </header>
 
   <div class="search-bar">
@@ -192,6 +202,7 @@
     const container = document.getElementById("serials-container");
     const filterBar = document.getElementById("genre-filters");
     const searchInput = document.getElementById("search-input");
+    const toggleBtn = document.getElementById("theme-toggle");
 
     function getUniqueGenres(serials) {
       const allGenres = serials.flatMap(s => s.genre.split(',').map(g => g.trim()));
@@ -258,9 +269,30 @@
       alert(`🎬 ${random.title}\n\nЖанр: ${random.genre}\nРейтинг: ${random.rating}\n\n${random.description}`);
     }
 
+    function applyTheme(theme) {
+      if (theme === "dark") {
+        document.body.style.backgroundColor = "#121212";
+        document.body.style.color = "#e0e0e0";
+        toggleBtn.textContent = "☀️ Светлая тема";
+      } else {
+        document.body.style.backgroundColor = "#f0f2f5";
+        document.body.style.color = "#000";
+        toggleBtn.textContent = "🌙 Тёмная тема";
+      }
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      const current = localStorage.getItem("theme") === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", current);
+      applyTheme(current);
+    });
+
     const uniqueGenres = getUniqueGenres(serials);
     renderFilters(uniqueGenres);
     renderSerials(serials);
+
+    const savedTheme = localStorage.getItem("theme") || "light";
+    applyTheme(savedTheme);
   </script>
 </body>
 </html>
