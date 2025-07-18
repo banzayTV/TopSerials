@@ -92,4 +92,120 @@
 
   <div class="container" id="serials-container"></div>
 
-  <s
+  <script>
+    const serials = [
+      {
+        title: "Очень странные дела",
+        genre: "Фантастика, Триллер",
+        rating: "8.7",
+        image: "https://upload.wikimedia.org/wikipedia/en/f/f7/Stranger_Things_season_4.jpg",
+        description: "Мистические события в городке, где дети сталкиваются с потусторонними силами."
+      },
+      {
+        title: "Во все тяжкие",
+        genre: "Драма, Криминал",
+        rating: "9.5",
+        image: "https://upload.wikimedia.org/wikipedia/en/6/61/Breaking_Bad_title_card.png",
+        description: "Химик превращается в наркобарона, чтобы обеспечить семью после диагноза рака."
+      },
+      {
+        title: "Игра престолов",
+        genre: "Фэнтези, Драма",
+        rating: "9.3",
+        image: "https://upload.wikimedia.org/wikipedia/en/d/d8/Game_of_Thrones_title_card.jpg",
+        description: "Борьба за Железный трон в фэнтезийном мире, где зима может длиться десятилетия."
+      },
+      {
+        title: "Шерлок",
+        genre: "Детектив, Драма",
+        rating: "9.1",
+        image: "https://upload.wikimedia.org/wikipedia/en/b/b9/Sherlock_titlecard.jpg",
+        description: "Современная адаптация классических историй о Шерлоке Холмсе."
+      },
+      {
+        title: "Черное зеркало",
+        genre: "Фантастика, Триллер",
+        rating: "8.8",
+        image: "https://upload.wikimedia.org/wikipedia/en/8/88/BlackMirrorTitleCard.jpg",
+        description: "Антология о технологиях будущего и их влиянии на общество."
+      },
+      {
+        title: "Корона",
+        genre: "Историческая драма",
+        rating: "8.6",
+        image: "https://upload.wikimedia.org/wikipedia/en/6/6e/The_Crown_title_card.jpg",
+        description: "История правления королевы Елизаветы II от молодости до зрелости."
+      },
+      {
+        title: "Мандалорец",
+        genre: "Фантастика, Приключения",
+        rating: "8.7",
+        image: "https://upload.wikimedia.org/wikipedia/en/6/6c/The_Mandalorian_season_2_poster.jpg",
+        description: "Наемник в галактике защищает загадочного малыша после падения Империи."
+      },
+      {
+        title: "Острые козырьки",
+        genre: "Криминал, Драма",
+        rating: "8.8",
+        image: "https://upload.wikimedia.org/wikipedia/en/e/e1/Peaky_Blinders_titlecard.jpg",
+        description: "Банда Пики Блайндерс борется за власть в Бирмингеме 20-х годов."
+      }
+    ];
+
+    const container = document.getElementById("serials-container");
+    const filterBar = document.getElementById("genre-filters");
+
+    function getUniqueGenres(serials) {
+      const allGenres = serials.flatMap(s => s.genre.split(',').map(g => g.trim()));
+      return [...new Set(allGenres)];
+    }
+
+    function renderFilters(genres) {
+      const allBtn = document.createElement("button");
+      allBtn.textContent = "Показать все";
+      allBtn.classList.add("active");
+      allBtn.addEventListener("click", () => {
+        document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
+        allBtn.classList.add("active");
+        renderSerials(serials);
+      });
+      filterBar.appendChild(allBtn);
+
+      genres.forEach(genre => {
+        const btn = document.createElement("button");
+        btn.textContent = genre;
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const filtered = serials.filter(s => s.genre.includes(genre));
+          renderSerials(filtered);
+        });
+        filterBar.appendChild(btn);
+      });
+    }
+
+    function renderSerials(list) {
+      container.innerHTML = "";
+      list.forEach(s => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${s.image}" alt="${s.title}">
+          <div class="card-content">
+            <div class="title">${s.title}</div>
+            <div class="genre"><strong>Жанр:</strong> ${s.genre}</div>
+            <div class="rating"><strong>Рейтинг:</strong> ${s.rating}</div>
+            <div class="description">${s.description}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Старт
+    const uniqueGenres = getUniqueGenres(serials);
+    renderFilters(uniqueGenres);
+    renderSerials(serials);
+  </script>
+</body>
+</html>
